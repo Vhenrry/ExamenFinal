@@ -1,0 +1,90 @@
+
+
+CREATE DATABASE examen_hibernate;
+
+CREATE SCHEMA empresa;
+
+CREATE TABLE empresa.operador (
+	id int4 NOT NULL,
+	nombre varchar(20) NOT NULL,
+	apellido varchar(20) NOT NULL,
+	categoria_licencia varchar(1) NOT NULL,
+	fecha_vencimiento date NOT NULL,
+	CONSTRAINT operador_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE empresa.operador_detalle (
+	id int4 NOT NULL,
+	direccion varchar(40) NULL,
+	email varchar(40) NULL,
+	telefono int4 NULL,
+	CONSTRAINT operador_detalle_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE empresa.tecnico (
+	id int4 NOT NULL,
+	apellido varchar(255) NULL,
+	nombre varchar(255) NULL,
+	contacto int4 NOT NULL,
+	CONSTRAINT tecnico_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE empresa.vehiculo (
+	placa varchar(8) NOT NULL,
+	modelo varchar(15) NULL,
+	odometro float8 NULL,
+	tipo varchar(25) NULL,
+	CONSTRAINT vehiculo_pkey PRIMARY KEY (placa)
+);
+
+CREATE TABLE empresa.revision (
+	id int4 NOT NULL,
+	fecha_revision date NOT NULL,
+	chofer int4 NOT NULL,
+	encargado int4 NOT NULL,
+	vehiculo varchar(8) NOT NULL,
+	CONSTRAINT revision_pkey PRIMARY KEY (id)
+);
+
+ALTER TABLE empresa.operador_detalle ADD CONSTRAINT fkffjtlbrfpqu63u8j2fooab2oq FOREIGN KEY (id) REFERENCES empresa.operador(id);
+ALTER TABLE empresa.revision ADD CONSTRAINT fk61k4piwolthrlqbjjf3lla6iu FOREIGN KEY (vehiculo) REFERENCES empresa.vehiculo(placa);
+ALTER TABLE empresa.revision ADD CONSTRAINT fkdipmjb4etbjfr1ilr0kv83g34 FOREIGN KEY (chofer) REFERENCES empresa.operador(id);
+ALTER TABLE empresa.revision ADD CONSTRAINT fkj04sbpe3h9sws5as2sj564u7w FOREIGN KEY (encargado) REFERENCES empresa.tecnico(id);
+
+
+INSERT INTO empresa.operador (id, nombre, apellido, categoria_licencia, fecha_vencimiento) VALUES
+(1,'Carlos','Mendoza','A','2027-05-10'),
+(2,'Luis','Quispe','B','2026-03-15'),
+(3,'Mario','Rojas','A','2028-07-20'),
+(4,'Pedro','Lopez','C','2025-12-01'),
+(5,'Jorge','Diaz','B','2027-09-18');
+
+
+INSERT INTO empresa.operador_detalle (id, telefono, direccion, email) VALUES
+(1,76543210,'Av Siempre Viva 123','carlos@mail.com'),
+(2,78945612,'Calle Falsa 456','luis@mail.com'),
+(3,74125896,'Zona Sur 789','mario@mail.com'),
+(4,79845632,'Villa Esperanza','pedro@mail.com'),
+(5,70012345,'Zona Norte','jorge@mail.com');
+
+
+INSERT INTO empresa.vehiculo (placa, odometro, modelo, tipo) VALUES
+('ABC1234',15000,'2023','tractor'),
+('DEF5678',8000,'2024','excavadora'),
+('GHI9012',5000,'2025','grua'),
+('JKL3456',20000,'2022','tractor'),
+('MNO7890',1000,'2026','retroexcavadora');
+
+INSERT INTO empresa.tecnico (id, nombre, apellido, contacto) VALUES
+(1,'Ana','Perez',78965412),
+(2,'Lucia','Gomez',74123698),
+(3,'Miguel','Torres',79874125),
+(4,'Raul','Vargas',76543219),
+(5,'Sofia','Castro',70011223);
+
+INSERT INTO empresa.revision (id, encargado, vehiculo, chofer, fecha_revision) VALUES
+(1,1,'ABC1234',1,'2025-01-10'),
+(2,2,'DEF5678',2,'2025-01-15'),
+(3,3,'GHI9012',3,'2025-02-01'),
+(4,4,'JKL3456',4,'2025-02-10'),
+(5,5,'MNO7890',5,'2025-02-15');
